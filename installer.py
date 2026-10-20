@@ -15,7 +15,18 @@ cursor.execute("""
     nombre VARCHAR(250) not null,
     precio INTEGER(50) not null,
     color VARCHAR(250) not null,
-    talle VARCHAR(250) not null
+    talle VARCHAR(250) not null,
+    );
+""")
+
+cursor.execute(""" 
+    CREATE TABLE IF NOT EXISTS Notificaciones(
+    id_producto INTEGER(50) not null PRIMARY KEY,
+    stock INTEGER(50) not null,
+    nombre VARCHAR(250) not null,
+    precio INTEGER(50) not null,
+    color VARCHAR(250) not null,
+    talle VARCHAR(250) not null,
     );
 """)
 
