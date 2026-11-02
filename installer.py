@@ -15,7 +15,7 @@ cursor.execute("""
     nombre VARCHAR(250) not null,
     precio INTEGER(50) not null,
     color VARCHAR(250) not null,
-    talle VARCHAR(250) not null,
+    talle VARCHAR(250) not null
     );
 """)
 
@@ -26,7 +26,7 @@ cursor.execute("""
     nombre VARCHAR(250) not null,
     precio INTEGER(50) not null,
     color VARCHAR(250) not null,
-    talle VARCHAR(250) not null,
+    talle VARCHAR(250) not null
     );
 """)
 
