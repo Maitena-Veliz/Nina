@@ -1,10 +1,9 @@
-i# backend.py
 import sqlite3
 
-DB = "Nina.db"   # poné el nombre real de tu base
+DB = "Nina.db" 
 
 
-def revisar_producto(nombre):
+def revisar_producto(nombre):           # REVISAR SI HAY STOCK
     """Busca por nombre y dice si hay stock o no."""
     con = sqlite3.connect(DB)
     con.row_factory = sqlite3.Row
@@ -31,3 +30,5 @@ def agregar_producto(nombre, color, talle, precio, stock=0):
     )
     con.commit()
     con.close()
+    
+#### Acá hacer lo del notificaciones ####
