@@ -1,30 +1,16 @@
-import tkinter
-
+i# backend.py
 import sqlite3
 
+DB = "Nina.db"   # poné el nombre real de tu base
 
-conexion = sqlite3.connect('Nina.db')
-cursor = conexion.cursor()
 
-cursor.execute("""
-    select * from clientes
-""")
-
-DB = "datos.db"
-
-# fetchall obtiene los datos que vienen de un select
-tabla = cursor.fetchall()
-return render_template("index.html",tabla=tabla)
-
-conexion.commit() #Confirma los cambios
-conexion.close() #Cierra la conexion con la base de datos
-
-def revisar_producto(nombre):              #BUSCAR POR STOCK/SI NO HAY STOCK
-    con = sqlite3.connect("datos.db")
+def revisar_producto(nombre):
+    """Busca por nombre y dice si hay stock o no."""
+    con = sqlite3.connect(DB)
     con.row_factory = sqlite3.Row
-    cur = con.cursor()
-    cur.execute("SELECT * FROM productos WHERE nombre = ?", (nombre,))
-    fila = cur.fetchone()
+    fila = con.execute(
+        "SELECT * FROM productos WHERE nombre = ?", (nombre,)
+    ).fetchone()
     con.close()
 
     if fila is None:
@@ -36,6 +22,7 @@ def revisar_producto(nombre):              #BUSCAR POR STOCK/SI NO HAY STOCK
 
 
 def agregar_producto(nombre, color, talle, precio, stock=0):
+    """Guarda un producto nuevo (lo usa el botón 'guardar')."""
     con = sqlite3.connect(DB)
     con.execute(
         "INSERT INTO productos (nombre, color, talle, precio, stock) "
