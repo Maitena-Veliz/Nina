@@ -1,3 +1,4 @@
+import tkinter as tk
 import sqlite3
 
 DB = "Nina.db"
@@ -89,3 +90,68 @@ def agregar_stock_notificacion(id_producto, cantidad):    # SUMA STOCK AL PRODUC
     con.commit()
     con.close()
     return "Stock actualizado"
+
+
+####################################################################################################################################################################
+
+ventana = tk.Tk()
+ventana.title("NINA")
+ventana.geometry("800x700")
+ventana.configure(bg="#C7C8CA")
+
+#texto
+etiqueta = tk.Label(ventana, text="Producto", font=("Arial", 12), bg="#C7C8CA",  fg="#333333")
+etiqueta.grid(row=0, column=0, padx=20, pady=10)
+#entry
+entrada_producto = tk.Entry(ventana)
+entrada_producto.grid(row=0, column=1, padx=10, pady=10)
+
+#texto
+etiqueta = tk.Label(ventana, text="Color", font=("Arial", 12), bg="#C7C8CA", fg="#333333")
+etiqueta.grid(row=1, column=0, padx=20, pady=10)
+
+#entry
+entrada_color = tk.Entry(ventana)
+entrada_color.grid(row=1, column=1, padx=10, pady=10)
+
+#texto
+etiqueta = tk.Label(ventana, text="Talle", font=("Arial", 12), bg="#C7C8CA", fg="#333333")
+etiqueta.grid(row=2, column=0,padx=20, pady=10 )
+#entry
+entrada_talle = tk.Entry(ventana)
+entrada_talle.grid(row=2, column=1, padx=10, pady=10)
+
+#texto
+etiqueta = tk.Label(ventana, text="Precio", font=("Arial", 12), bg="#C7C8CA", fg="#333333")
+etiqueta.grid(row=3, column=0, padx=20, pady=10)
+#entry
+entrada_precio = tk.Entry(ventana)
+entrada_precio.grid(row=3, column=1, padx=10, pady=10)
+
+#texto
+etiqueta = tk.Label(ventana, text="Stock", font=("Arial", 12), bg="#C7C8CA", fg="#333333")
+etiqueta.grid(row=4, column=0, padx=20, pady=10)
+#entry
+entrada_stock = tk.Entry(ventana)
+entrada_stock.grid(row=4, column=1, padx=10, pady=10)
+
+def guardar():
+    producto = entrada_producto.get()
+    color = entrada_color.get()
+    talle = entrada_talle.get()
+    precio = float(entrada_precio.get())
+    stock = int(entrada_stock.get())
+
+    conexion = sqlite3.connect("tienda.db")
+    cursor = conexion.cursor()
+    cursor.execute(
+        "INSERT INTO productos (producto, color, talle, precio, stock) VALUES (?, ?, ?, ?, ?)",
+        (producto, color, talle, precio, stock)
+    )
+    conexion.commit()
+    conexion.close()
+
+boton = tk.Button(ventana, text="guardar",font=("Arial", 12, "bold"), bg="#0833A2", fg="white", command=guardar)
+boton.grid(row=5, column=0, columnspan=2, sticky="ew")
+
+ventana.mainloop()
