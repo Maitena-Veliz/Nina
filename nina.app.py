@@ -1,5 +1,6 @@
 import tkinter as tk
 import sqlite3
+from tkinter import messagebox
 
 DB = "Nina.db"
 
@@ -42,7 +43,7 @@ def generar_notificaciones():    # COPIA A NOTIFICACIONES LOS PRODUCTOS SIN STOC
         INSERT OR IGNORE INTO Notificaciones
             (id_producto, stock, nombre, precio, color, talle)
         SELECT id_producto, stock, nombre, precio, color, talle
-        FROM productos
+        FROM Producto
         WHERE stock = 0
     """)
     con.commit()
@@ -153,7 +154,42 @@ def guardar():
 
     agregar_producto(producto, color, talle, precio, stock)
 
-boton = tk.Button(ventana, text="guardar",font=("Arial", 12, "bold"), bg="#0833A2", fg="white", command=guardar)
+    if stock == 0:
+        mostrar_notificacion(producto)
+    #    messagebox.showwarning("Sin stock", "...")
+
+def mostrar_notificacion(producto):
+    ventana_noti = tk.Toplevel()
+    ventana_noti.title("Sin stock")
+    ventana_noti.geometry("350x180")
+    ventana_noti.configure(bg="#C4DAFA")
+
+    tk.Label(
+        ventana_noti,
+        text="Producto sin stock",
+        font=("Arial", 16, "bold"),
+        bg="#C4DAFA",
+        fg="#0833A2"
+    ).pack(pady=15)
+
+    tk.Label(
+        ventana_noti,
+        text=f"El producto '{producto}' no tiene stock.",
+        font=("Arial", 11),
+        bg="#C4DAFA"
+    ).pack(pady=10)
+
+    tk.Button(
+        ventana_noti,
+        text="Aceptar",
+        font=("Arial", 12, "bold"),
+        bg="#0833A2",
+        fg="white",
+        width=15,
+        command=ventana_noti.destroy
+    ).pack(pady=15)
+
+boton = tk.Button(ventana, text="Guardar",font=("Arial", 12, "bold"), bg="#0833A2", fg="white", command=guardar)
 boton.grid(row=5, column=0, columnspan=2, sticky="ew")
 
 ventana.mainloop()
