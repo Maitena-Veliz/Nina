@@ -51,10 +51,19 @@ def generar_notificaciones():    # COPIA A NOTIFICACIONES LOS PRODUCTOS SIN STOC
 
 def agregar_producto(nombre, color, talle, precio, stock=0):    # GUARDA PRODUCTO NUEVO. SI ENTRA SIN STOCK, VA A NOTIS
     con = sqlite3.connect(DB)
+
+    fila = con.execute("SELECT MAX(id_producto) FROM Producto").fetchone()
+    ultimo = fila[0]
+
+    if ultimo is None:
+        nuevo_id = 1
+    else:
+        nuevo_id = ultimo + 1
+
     con.execute(
-        "INSERT INTO productos (nombre, color, talle, precio, stock) "
-        "VALUES (?, ?, ?, ?, ?)",
-        (nombre, color, talle, precio, stock),
+        "INSERT INTO Producto (id_producto, nombre, color, talle, precio, stock) "
+        "VALUES (?, ?, ?, ?, ?, ?)",
+        (nuevo_id, nombre, color, talle, precio, stock),
     )
     con.commit()
     con.close()
@@ -103,8 +112,8 @@ ventana.configure(bg="#C7C8CA")
 etiqueta = tk.Label(ventana, text="Producto", font=("Arial", 12), bg="#C7C8CA",  fg="#333333")
 etiqueta.grid(row=0, column=0, padx=20, pady=10)
 #entry
-entrada_producto = tk.Entry(ventana)
-entrada_producto.grid(row=0, column=1, padx=10, pady=10)
+entrada_Producto = tk.Entry(ventana)
+entrada_Producto.grid(row=0, column=1, padx=10, pady=10)
 
 #texto
 etiqueta = tk.Label(ventana, text="Color", font=("Arial", 12), bg="#C7C8CA", fg="#333333")
@@ -136,20 +145,13 @@ entrada_stock = tk.Entry(ventana)
 entrada_stock.grid(row=4, column=1, padx=10, pady=10)
 
 def guardar():
-    producto = entrada_producto.get()
+    producto = entrada_Producto.get()
     color = entrada_color.get()
     talle = entrada_talle.get()
     precio = float(entrada_precio.get())
     stock = int(entrada_stock.get())
 
-    conexion = sqlite3.connect("tienda.db")
-    cursor = conexion.cursor()
-    cursor.execute(
-        "INSERT INTO productos (producto, color, talle, precio, stock) VALUES (?, ?, ?, ?, ?)",
-        (producto, color, talle, precio, stock)
-    )
-    conexion.commit()
-    conexion.close()
+    agregar_producto(producto, color, talle, precio, stock)
 
 boton = tk.Button(ventana, text="guardar",font=("Arial", 12, "bold"), bg="#0833A2", fg="white", command=guardar)
 boton.grid(row=5, column=0, columnspan=2, sticky="ew")
